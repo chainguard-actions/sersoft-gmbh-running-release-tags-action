@@ -1,1 +1,15 @@
-# sersoft-gmbh-running-release-tags-action
+# sersoft-gmbh/running-release-tags-action
+
+A GitHub action that automatically updates "running release" major and major.minor tags.
+
+Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/sersoft-gmbh/running-release-tags-action](https://github.com/sersoft-gmbh/running-release-tags-action).
+
+## Versions
+
+| Version | Tag | Upstream commit |
+|---------|-----|-----------------|
+| v4.0.1 | [`v4.0.1`](https://github.com/chainguard-actions/sersoft-gmbh-running-release-tags-action/tree/v4.0.1) | [`662ab3f`](https://github.com/sersoft-gmbh/running-release-tags-action/commit/662ab3fa4f6c47c0694e2bc69c7bd472c1ee765b) |
+
+## Privacy
+
+This Action contacts Chainguard's licensing server to verify authorization. Connection metadata (IP address, GitHub repository identifier, timestamp, and any metadata encoded in the auth token) is transmitted to Chainguard, Inc. even if authorization is denied in accordance with our [Privacy Notice](https://www.chainguard.dev/legal/privacy-notice)
