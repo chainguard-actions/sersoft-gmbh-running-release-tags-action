@@ -1,0 +1,22 @@
+name: Test non-semver tag with fail-on-non-semver-tag=false (dry-run)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      RUNNER_DEBUG: '1'
+      TEST_GITHUB_REF: refs/tags/not-a-semver-tag
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          dry-run: 'true'
+          create-release: 'false'
+          fail-on-non-semver-tag: 'false'
+          skip-repo-setup: 'true'
+      - name: Assert action succeeded (non-semver tag, no fail)
+        run: |
+          echo "Action completed successfully - non-semver tag was ignored gracefully"
+          echo "PASS"
