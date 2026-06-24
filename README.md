@@ -8,6 +8,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
+| v4.0.0 | [`v4.0.0`](https://github.com/chainguard-actions/sersoft-gmbh-running-release-tags-action/tree/v4.0.0) | [`4f199d3`](https://github.com/sersoft-gmbh/running-release-tags-action/commit/4f199d3227eecc482b4d7ed3d1174041fc055136) |
 | v4.0.1 | [`v4.0.1`](https://github.com/chainguard-actions/sersoft-gmbh-running-release-tags-action/tree/v4.0.1) | [`662ab3f`](https://github.com/sersoft-gmbh/running-release-tags-action/commit/662ab3fa4f6c47c0694e2bc69c7bd472c1ee765b) |
 
 ## Privacy
