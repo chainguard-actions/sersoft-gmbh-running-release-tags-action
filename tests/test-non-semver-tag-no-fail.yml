@@ -1,0 +1,23 @@
+name: Test non-semver tag does not fail when fail-on-non-semver-tag is false
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: 'true'
+      RUNNER_DEBUG: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          tag: not-a-semver-tag
+          dry-run: 'true'
+          create-release: 'false'
+          skip-repo-setup: 'true'
+          fail-on-non-semver-tag: 'false'
+      - name: Assert action completed without error on non-semver tag
+        run: |
+          echo "Action completed successfully with non-semver tag and fail-on-non-semver-tag=false"
+          echo "PASS"

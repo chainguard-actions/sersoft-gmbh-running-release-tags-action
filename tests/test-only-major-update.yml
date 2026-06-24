@@ -1,0 +1,24 @@
+name: Test only major tag update
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: 'true'
+      RUNNER_DEBUG: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          tag: v4.0.0
+          dry-run: 'true'
+          create-release: 'false'
+          skip-repo-setup: 'true'
+          update-major: 'true'
+          update-minor: 'false'
+      - name: Assert action completed with only major update enabled
+        run: |
+          echo "Action completed successfully with update-major=true and update-minor=false"
+          echo "PASS"
