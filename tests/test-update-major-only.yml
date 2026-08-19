@@ -1,0 +1,35 @@
+name: Test update major tag only (dry-run)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: 'true'
+      RUNNER_DEBUG: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          tag: v2.5.0
+          dry-run: 'true'
+          create-release: 'false'
+          update-major: 'true'
+          update-minor: 'false'
+      - name: Assert executed-commands contains major tag but not minor tag
+        env:
+          CMDS: ${{ steps.action.outputs.executed-commands }}
+        run: |
+          echo "executed-commands: $CMDS"
+          if echo "$CMDS" | grep -qE 'git tag --force v2$'; then
+            echo "PASS: major tag v2 found"
+          else
+            echo "FAIL: expected major tag v2 not found in: $CMDS"
+            exit 1
+          fi
+          if echo "$CMDS" | grep -q 'git tag --force v2\.5'; then
+            echo "FAIL: minor tag v2.5 should not be present when update-minor=false"
+            exit 1
+          fi
+          echo "PASS: minor tag correctly absent"

@@ -1,0 +1,35 @@
+name: Test skip-repo-setup=true (dry-run)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: 'true'
+      RUNNER_DEBUG: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          tag: v4.0.1
+          dry-run: 'true'
+          create-release: 'false'
+          skip-repo-setup: 'true'
+          update-major: 'true'
+          update-minor: 'true'
+      - name: Assert executed-commands does not contain git config commands
+        env:
+          CMDS: ${{ steps.action.outputs.executed-commands }}
+        run: |
+          echo "executed-commands: $CMDS"
+          if echo "$CMDS" | grep -q 'git config user'; then
+            echo "FAIL: git config user command should not be present when skip-repo-setup=true"
+            exit 1
+          fi
+          if echo "$CMDS" | grep -q 'git tag --force v4'; then
+            echo "PASS: git tag command found and git config skipped"
+          else
+            echo "FAIL: expected git tag command not found in: $CMDS"
+            exit 1
+          fi

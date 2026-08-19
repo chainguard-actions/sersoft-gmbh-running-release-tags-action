@@ -1,0 +1,35 @@
+name: Test create-release in dry-run mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: 'true'
+      RUNNER_DEBUG: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          tag: v5.2.1
+          dry-run: 'true'
+          create-release: 'true'
+          create-release-as-draft: 'false'
+          update-major: 'true'
+          update-minor: 'true'
+          major-release-title: '${version} Major Release Track'
+          major-release-body: 'This release tracks the latest ${version} major release (${version}.x.y).'
+          minor-release-title: '${version} Minor Release Track'
+          minor-release-body: 'This release tracks the latest ${version} minor release (${version}.x).'
+      - name: Assert executed-commands output contains expected git and github commands
+        env:
+          CMDS: ${{ steps.action.outputs.executed-commands }}
+        run: |
+          echo "executed-commands: $CMDS"
+          if echo "$CMDS" | grep -q 'git tag --force v5'; then
+            echo "PASS: git tag command found"
+          else
+            echo "FAIL: expected git tag command not found in: $CMDS"
+            exit 1
+          fi

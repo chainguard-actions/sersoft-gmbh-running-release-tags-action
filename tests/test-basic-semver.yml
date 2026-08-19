@@ -1,0 +1,30 @@
+name: Test basic semver tag (dry-run)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: 'true'
+      RUNNER_DEBUG: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          tag: v1.2.3
+          dry-run: 'true'
+          create-release: 'false'
+          update-major: 'true'
+          update-minor: 'true'
+      - name: Assert executed-commands output contains expected git commands
+        env:
+          CMDS: ${{ steps.action.outputs.executed-commands }}
+        run: |
+          echo "executed-commands: $CMDS"
+          if echo "$CMDS" | grep -q 'git tag --force v1'; then
+            echo "PASS: git tag command found"
+          else
+            echo "FAIL: expected git tag command not found in: $CMDS"
+            exit 1
+          fi

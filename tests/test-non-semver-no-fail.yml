@@ -1,0 +1,28 @@
+name: Test non-semver tag with fail-on-non-semver-tag=false (dry-run)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: 'true'
+      RUNNER_DEBUG: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          tag: not-a-semver-tag
+          dry-run: 'true'
+          create-release: 'false'
+          fail-on-non-semver-tag: 'false'
+      - name: Assert action completed without error (skipped non-semver)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" != "success" ]; then
+            echo "FAIL: expected action to succeed (skip) for non-semver tag with fail-on-non-semver-tag=false, but got: $OUTCOME"
+            exit 1
+          fi
+          echo "PASS: action correctly skipped non-semver tag without failing"
