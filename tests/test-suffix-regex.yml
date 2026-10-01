@@ -4,16 +4,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_REF: refs/tags/v1.2.3-stable
-      GITHUB_EVENT_NAME: push
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - id: action
         uses: .
         with:
           tag: v1.2.3-stable
+          prefix-regex: 'v?'
           suffix-regex: '-stable'
+          fail-on-non-semver-tag: 'false'
           update-major: 'true'
           update-minor: 'true'
           create-release: 'false'
