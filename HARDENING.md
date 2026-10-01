@@ -8,7 +8,7 @@
 
 **Test Policy SHA:** `843adf9e4b8f85d0c08b27b9d0b09dd094b54702`
 
-**Harden Agent Version:** `1`
+**Harden Agent Version:** `2`
 
 Action **sersoft-gmbh--running-release-tags-action/v4.0.0** was hardened automatically. 1 finding(s) were identified and resolved across 1 iteration(s).
 
@@ -16,11 +16,11 @@ Action **sersoft-gmbh--running-release-tags-action/v4.0.0** was hardened automat
 
 ### unpinned-uses (severity: high)
 
-The composite action at .github/actions/generate-action-code/action.yml references `actions/setup-node@v6`, which is pinned to a mutable tag rather than an immutable 40-character commit SHA. This means the action could silently change if the tag is moved, enabling supply-chain attacks. It should be pinned to a full SHA, e.g. `actions/setup-node@<40-char-sha> # v6`.
+The composite action uses `actions/setup-node@v6`, which is pinned to a mutable version tag rather than an immutable 40-character commit SHA. This means the action could be silently updated to a different (potentially malicious) version without any change to this repository. It should be pinned to a full SHA, e.g. `actions/setup-node@<40-char-sha> # v6`.
 
 Locations:
 
-- `.github/actions/generate-action-code/action.yml:8`
+- `.github/actions/generate-action-code/action.yml:7`
 
 ## Iteration Notes
 
@@ -30,5 +30,5 @@ Locations:
 
 **Notes:**
 
-Pinned `actions/setup-node@v6` to full commit SHA `48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e` in `.github/actions/generate-action-code/action.yml`. The mutable tag is preserved as a comment (`# v6`) for readability.
+Pinned actions/setup-node@v6 to its full commit SHA (249970729cb0ef3589644e2896645e5dc5ba9c38) in hardened/action/.github/actions/generate-action-code/action.yml. The original tag is preserved as a comment for readability: `actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6`.
 
